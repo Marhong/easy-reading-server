@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+const easyreadingRouter = require('./routes/easyreading');
 var app = express();
 // 设置 Mongoose 连接
 const mongoose = require('mongoose');
@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/easyreading', easyreadingRouter);  // 将 catalog 路由添加进中间件链
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

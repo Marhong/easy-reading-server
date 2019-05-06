@@ -9,6 +9,10 @@ const BookTypeSchema = new Schema({
     id:{type:Number,required:true},
     // 书籍类型名字
     name:{type: String, required:true},
+    // 书籍类型的别名
+    nickName:{type:String,required:false},
+    // 书籍类型的图标名
+    iconName:{type:String,required:false},
     // 创建该书籍类型的用户id
     // 如果是固定的那8个，用户idJ就为管理员id
     userId:{type: Schema.Types.ObjectId, ref: 'User',required:true},
@@ -24,5 +28,5 @@ const BookTypeSchema = new Schema({
 
 // 暂不写虚拟属性
 
-// 导出 Book 模块
+// 导出 BookType 模块
 module.exports = mongoose.model('BookType', BookTypeSchema);

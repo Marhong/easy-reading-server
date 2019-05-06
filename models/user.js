@@ -7,12 +7,12 @@ const UserSchema = new Schema(
     {
         // 用户唯一标识id
         id: {type: Number, required: true},
-        // 用户名至少4个字符，最多16个字符
-        name:{type:String,required:true,min:4,max:16},
+        // 用户名至少1个字符，最多16个字符
+        name:{type:String,required:true,min:1,max:16},
         // 账号密码至少6个字符，最多20个字符
         password:{type:String,required:true,min:8,max:20},
         // 用户性别
-        gender:{type:String,required:false},
+        gender:{type:String,required:false,default:"male"},
         // 用户现居地,按省,市,县/区格式存储
         address:{type:String,required:false},
         // 用户邮箱
@@ -31,7 +31,7 @@ const UserSchema = new Schema(
         // 账号注册时间,存为时间戳
         signUpTime:{type:Number,required:true},
         // 用户唯一书架的id
-        bookshelfId:{type:Number,required:true},
+        bookshelfId:{type: Schema.Types.ObjectId, ref: 'Bookshelf',required:true},
         // 用户表单集合(收藏别人、自己创建的都统一放在postList中)
         bookList:[{type: Schema.Types.ObjectId, ref: 'BookList'}],
         // 用户发表的帖子集合
@@ -60,5 +60,5 @@ const UserSchema = new Schema(
 
 // 暂不写虚拟属性
 
-// 导出 Author 模型
+// 导出 User 模型
 module.exports = mongoose.model('User', UserSchema);

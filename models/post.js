@@ -25,5 +25,5 @@ const PostSchema = new Schema({
 
 // 暂不写虚拟属性
 
-// 导出 Book 模块
+// 导出 Post 模块
 module.exports = mongoose.model('Post', PostSchema);
