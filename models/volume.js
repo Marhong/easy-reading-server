@@ -10,8 +10,6 @@ const VolumeSchema = new Schema({
     bookId:{type: Schema.Types.ObjectId, ref: 'Book',required:true},
     // 卷的名字长度在1-15
     name:{type:String,required:true,min:1,max:15,},
-    // 该卷的总字数
-    numbers:{type:Number,required:true},
     // 该卷是否免费
     // 目前没实现章节分为免费或VIP，默认都是免费章节
     isFree:{type:Boolean,required:false,default:true},
@@ -23,7 +21,18 @@ const VolumeSchema = new Schema({
 
 });
 
-// 暂不写虚拟属性
-
+// 虚拟属性'count'：该卷包含章节书
+VolumeSchema
+    .virtual('count')
+    .get(function () {
+        return this.chapterList.length;
+    });
+// 虚拟属性'numbers'：该卷的总字数
+VolumeSchema
+    .virtual('numbers')
+    .get(function () {
+        let chapterList = this.chapterList;
+        return chapterList.reduce((pre,cur) => pre.numbers+cur.numbers);
+    });
 // 导出 Volume 模块
 module.exports = mongoose.model('Volume', VolumeSchema);

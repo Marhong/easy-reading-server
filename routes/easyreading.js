@@ -38,12 +38,32 @@ router.get('/bulletinList/bulletinBoard/:num',bulletin_controller.bulletin_getTo
 // 获取用户每天的个性化推荐书籍列表
 router.get('/books/personalBooks',book_controller.book_getPersonalBooks);
 // GET 通过书籍id获取某一书籍详细信息
-router.get('/books/:id',book_controller.book_getBookById);
+router.get('/books/:id/detail',book_controller.book_getBookById);
+// GET 获取书籍的最近更新章节
+router.get('/books/:id/latestChapter',book_controller.book_getLatestChapter);
+// GET 通过书籍id获取某一书籍的所有章节
+router.get('/books/:id/volumes',book_controller.book_getAllVolumesById);
 
-/// Cahpter章节路由 ///
+/// Cahpter章节路由 ///   用户每次切换章节都会更新对应书籍的最后阅读章节属性
 
 // GET通过章节id获取某一章节详细信息
-router.get('/chapters/:id',chapter_controller.chapter_getChapterById);
+router.get('/chapters/:id/detail',chapter_controller.chapter_getChapterById);
+// GET 通过章节id获取该章节的上一章
+router.get('/chapters/:id/preChapter',chapter_controller.getPreChapter);
+// GET 通过章节id获取该章节的下一章
+router.get('/chapters/:id/nextChapter',chapter_controller.getNextChapter);
+
+/// ReadingSetting阅读界面设置路由
+
+// GET 通过用户id，获取该用户的阅读界面设置
+router.get('/readingSetting/:id/detail',reading_setting_controller.getReadingSettingById);
+// POST 通过用户id,更新该用户的阅读界面设置
+router.post('/readingSetting/:id/update',reading_setting_controller.updateReadingSettingById);
+
+/// RankRecord评分记录路由
+
+// POST 通过用户id,更改他对某一bookId的评分
+router.post('/rankRecord/:userId/:bookId/update',rank_record_controller.updateRankRecord);
 
 
 

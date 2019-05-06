@@ -33,8 +33,6 @@ const BookSchema = new Schema({
     // 书籍介绍长度在1-50
     // 该内容只有在通过爬虫爬取书籍时才能得到，用户上传是得不到的
     description:{type:String,required:false,min:1,max:50},
-    // 书籍总字数
-    numbers:{type:Number,required:true},
     // 该书籍的点击次数，即浏览过该书籍(进入到书籍详情页面)的次数
     clickedNumbers:{type:Number,required:true},
     // 书籍是否完结
@@ -60,10 +58,39 @@ const BookSchema = new Schema({
     // 是否为免费书籍
     // 默认都为免费书籍
     isFree:{type:Boolean,required:true,default:true},
+    // 用户最后阅读的章节,主要用户恢复到上次的阅读状态
+    lastChapter:{type: Schema.Types.ObjectId, ref: 'Chapter',required:true},
 
 });
 
-// 暂不写虚拟属性
+// 虚拟属性'rankNumber'：给书籍打分的人数
+BookSchema
+    .virtual('rankNumbers')
+    .get(function () {
+        return this.rankList.length;
+    });
 
+// 虚拟属性'recommendNumber'：给书籍打分的人数
+BookSchema
+    .virtual('recommendNumbers')
+    .get(function () {
+        return this.recommendList.length;
+    });
+
+// 虚拟属性'score'：书籍分数
+BookSchema
+    .virtual('score')
+    .get(function () {
+        let rankList = this.rankList;
+        return (rankList.reduce((pre,cur) => pre.score+cur.score)/rankList.length).toFixed(1);
+    });
+
+// 虚拟属性'numbers'：书籍的总字数
+BookSchema
+    .virtual('numbers')
+    .get(function () {
+        let volumeList = this.volumeList;
+        return volumeList.reduce((pre,cur) => pre.numbers+cur.numbers);
+    });
 // 导出 Book 模块
 module.exports = mongoose.model('Book', BookSchema);
